@@ -1,4 +1,4 @@
-import reddit from './redditapi';
+// import reddit from './redditapi';
 
 const searchForm = document.getElementById('search-form');
 const searchBtn = document.getElementById('search-btn');
@@ -20,7 +20,7 @@ searchForm.addEventListener('submit', e => {
   searchInput.value = '';
 
   // Search Reddit
-  reddit.search(searchTerm, searchLimit, sortBy).then(results => {
+search(searchTerm, searchLimit, sortBy).then(results => {
     let output = '<div class="card-columns">';
     console.log(results);
    results.forEach(post => {
@@ -79,3 +79,14 @@ function truncateString(myString, limit) {
   return myString.substring(0, shortened);
 }
 // alert(12345);
+
+   function search(searchTerm, searchLimit, sortBy) {
+    return fetch(
+      `http://www.reddit.com/search.json?q=${searchTerm}&sort=${sortBy}&limit=${searchLimit}`
+    )
+      .then(res => res.json())
+      .then(data => {
+        return data.data.children.map(data => data.data);
+      })
+      .catch(err => console.log(err));
+  }
